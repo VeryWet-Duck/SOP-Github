@@ -123,6 +123,7 @@ def solve_aco(locations, start_index, n_ants=50, n_iterations=1000, alpha=1, bet
 def plot_route(locations, route):
     """
     Plots the optimal route on a map using folium and displays distances.
+    Each route segment displays a distance label with a white background and is placed in a styled box.
     """
     print("Plotting the optimal route on the map...")
 
@@ -144,7 +145,34 @@ def plot_route(locations, route):
         end = locations[route[i + 1]]
         distance = geodesic(start[:2], end[:2]).kilometers
         total_distance += distance
+
+        # Add a polyline for the route segment
         folium.PolyLine([start[:2], end[:2]], color="blue", weight=2, opacity=0.6).add_to(m)
+
+        # Add a styled distance label at the midpoint
+        midpoint = (
+            (start[0] + end[0]) / 2,  # Latitude
+            (start[1] + end[1]) / 2   # Longitude
+        )
+        distance_label = f"{distance:.2f} km"
+        folium.Marker(
+            location=midpoint,
+            icon=folium.DivIcon(html=f"""
+                <div style="
+                    font-size: 14px; /* Make label text bigger */
+                    font-weight: bold; /* Make label bold */
+                    background-color: white; /* White non-transparent background */
+                    border: 1px solid black; /* Add a thin black border */
+                    border-radius: 5px; /* Slightly rounded corners for the box */
+                    padding: 5px; /* Add padding inside the box */
+                    display: inline-block; /* Ensure box size fits the text */
+                    white-space: nowrap; /* Keep the text on a single line */
+                    text-align: center; /* Center the text in the box */
+                ">
+                    {distance_label}
+                </div>
+            """)
+        ).add_to(m)
 
     # Display the total distance on the map
     total_distance_label = f"Total Distance: {total_distance:.2f} km"
@@ -154,6 +182,10 @@ def plot_route(locations, route):
     print(f"Total route distance: {total_distance:.2f} km")
 
     return m
+
+
+
+
 # Input addresses
 addresses = [
     "Nystedvej 33, 7400 Herning, Denmark",
