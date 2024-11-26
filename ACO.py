@@ -148,9 +148,7 @@ def plot_route(locations, route):
 
     # Display the total distance on the map
     total_distance_label = f"Total Distance: {total_distance:.2f} km"
-    total_distance_html = f'<div style="position: fixed; top: 10px; right: 
-    10px; font-size: 16pt; color: black; background-color: white; padding: 
-    10px 20px; border-radius: 5px; font-weight: bold; z-index: 9999;">{total_distance_label}</div>'
+    total_distance_html = f'<div style="position: fixed; top: 10px; right: 10px; font-size: 16pt; color: black; background-color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold; z-index: 9999;">{total_distance_label}</div>'
     m.get_root().html.add_child(folium.Element(total_distance_html))
 
     print(f"Total route distance: {total_distance:.2f} km")
